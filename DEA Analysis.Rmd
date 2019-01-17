@@ -1,0 +1,178 @@
+---
+title: "DEA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+input<- matrix(c(150,400,320,520,350,320,0.2,0.7,1.2,2,1.2,0.7),ncol = 2)
+output <- matrix(c(14000,14000,42000,28000,19000,14000,3500,21000,10500,42000,25000,15000),ncol = 2)
+input
+output
+```
+
+
+```{r}
+colnames(input)<-c('staff_hour','supplies_day')
+colnames(output)<- c('reimbursed_pd','privately_pd')
+input
+output
+```
+```{r}
+library(Benchmarking)
+```
+
+
+```{r}
+c<- dea(input,output, RTS ='CRS')
+c
+```
+
+```{r}
+c_peers<-peers(c)
+c_lambda<-lambda(c)
+Facility<-c('Facility 1','Facility 2','Facility 3','Facility 4','Facility 5','Facility 6')
+df<-data.frame(Facility,c_peers,c_lambda)
+colnames(df)<-c('Facilities','Peer 1','Peer 2','Peer 3','Lambda 1','Lambda 2','Lambda 3','Lambda 4')
+df
+```
+
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'crs',xlab = 'input', ylab ='output',main ='Input vs Output using CRS')
+```
+
+
+
+
+
+
+
+
+```{r}
+f1<- dea(input,output, RTS ='add')
+f1
+```
+
+```{r}
+
+f1_peers<-peers(f1)
+f1_lambda<-lambda(f1)
+Facility<-c('Facility 1','Facility 2','Facility 3','Facility 4','Facility 5','Facility 6')
+df1<-data.frame(Facility,f1_peers,f1_lambda)
+colnames(df1)<-c('Facilities','Peer 1','Lambda 1','Lambda 2','Lambda 3','Lambda 4','Lambda 5','Lambda 6')
+df1
+```
+
+
+
+
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'fdh+',xlab = 'input', ylab ='output',main ='Input vs Output using FDH +')
+
+```
+
+
+
+
+
+```{r}
+d<- dea(input,output, RTS ='drs')
+d
+dea.plot.frontier(input,output,RTS = 'drs',xlab = 'input', ylab ='output',main ='Input vs Output using DRS')
+
+```
+
+```{r}
+i<-dea(input,output, RTS ='irs')
+i
+```
+
+
+```{r}
+i_peers<-peers(i)
+i_lambda<-lambda(i)
+Facility<-c('Facility 1','Facility 2','Facility 3','Facility 4','Facility 5','Facility 6')
+df3<-data.frame(Facility,i_peers,i_lambda)
+colnames(df3)<-c('Facilities','Peer 1','Peer 2','Peer 3','Lambda 1','Lambda 2','Lambda 3','Lambda 4','Lambda 5')
+df3
+```
+
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'irs',xlab = 'input', ylab ='output',main ='Input vs Output using IRS')
+```
+
+
+```{r}
+v<-dea(input,output, RTS ='vrs')
+
+```
+
+```{r}
+v_peers<-peers(v)
+v_lambda<-lambda(v)
+Facility<-c('Facility 1','Facility 2','Facility 3','Facility 4','Facility 5','Facility 6')
+df4<-data.frame(Facility,v_peers,v_lambda)
+colnames(df4)<-c('Facilities','Peer 1','Peer 2','Peer 3','Lambda 1','Lambda 2','Lambda 3','Lambda 4','Lambda 5')
+df4
+```
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'vrs',xlab = 'input', ylab ='output',main ='Input vs Output using VRS')
+```
+
+```{r}
+f<- dea(input,output, RTS ='fdh')
+f
+```
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'fdh',xlab = 'input', ylab ='output',main ='Input vs Output using FDH')
+
+```
+
+
+
+```{r}
+dea.plot.frontier(input,output,RTS = 'add',xlab = 'input', ylab ='output',main ='Input vs Output using FRH')
+
+```
+
+```{r}
+e_crs<-c(1.0000, 1.0000 ,1.0000, 1.0000, 0.9775, 0.8675)
+e_drs<-c( 1.0000, 1.0000 ,1.0000, 1.0000, 0.9775, 0.8675)
+e_irs<-c(1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 0.8963)
+e_vrs<-c(1.0000, 1.0000, 1.0000, 1.0000, 1.0000, 0.8963)
+e_FDH<-c( 1, 1 ,1 ,1 ,1, 1)
+e_FRH<-c( 1, 1 ,1 ,1 ,1, 1)
+e_FDH1 <- c( 1, 1 ,1 ,1 ,1, 1)
+
+facility<-c('facility 1','facility 2','facility 3','facility 4','facility 5', 'facility 6')
+```
+
+```{r}
+efficiency<-data.frame(facility,e_FDH,e_FRH,e_FDH1,e_crs,e_drs,e_irs,e_vrs)
+colnames(efficiency)<-c('Facilities','FDH','FRH','FDH1','CRS','DRS','IRS','VRS')
+
+
+```
+
+Calculation of effeciency using different analysis for the facilities 1 to 6.
+
+```{r}
+efficiency
+```
+
+
+
+
+
+
+
